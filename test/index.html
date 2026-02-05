@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Rust + WASM</title>
+</head>
+<body>
+    <script type="module">
+        import init, { parse_msg_file } from '../pkg/msg_parser_wasm.js';
+      
+        async function run() {
+          await init(); // 初始化 WASM 模块
+      
+          const fileInput = document.getElementById('file-input');
+          
+          fileInput.addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+      
+            const arrayBuffer = await file.arrayBuffer();
+            const uint8Array = new Uint8Array(arrayBuffer);
+      
+            try {
+              // 调用 Rust 函数，传入 Uint8Array
+              const emailData = parse_msg_file(uint8Array);
+              
+              console.log("解析成功:", emailData);
+              console.log("主题:", emailData.subject);
+              console.log("正文:", emailData.body_text);
+              
+              // 处理附件
+              if (emailData.attachments.length > 0) {
+                 const att = emailData.attachments[0];
+                 // att.data 是一个数字数组，可以转回 Uint8Array
+                 const attData = new Uint8Array(att.data);
+                 console.log("附件1大小:", attData.length);
+              }
+      
+            } catch (err) {
+              console.error("解析错误:", err);
+            }
+          });
+        }
+      
+        run();
+      </script>
+      
+      <input type="file" id="file-input" accept=".msg">
+</body>
+</html>
