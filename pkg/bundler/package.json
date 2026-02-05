@@ -1,0 +1,22 @@
+{
+  "name": "msg-parser-wasm",
+  "type": "module",
+  "collaborators": [
+    "xushengwang183@gmail.com"
+  ],
+  "description": "A high-performance Outlook .msg file parser powered by Rust and WebAssembly",
+  "version": "0.0.1-beta",
+  "license": "MIT",
+  "files": [
+    "msg_parser_wasm_bg.wasm",
+    "msg_parser_wasm.js",
+    "msg_parser_wasm_bg.js",
+    "msg_parser_wasm.d.ts"
+  ],
+  "main": "msg_parser_wasm.js",
+  "types": "msg_parser_wasm.d.ts",
+  "sideEffects": [
+    "./msg_parser_wasm.js",
+    "./snippets/*"
+  ]
+}

@@ -1,0 +1,56 @@
+/* tslint:disable */
+/* eslint-disable */
+/**
+ * WASM 导出接口
+ * 解析 MSG 文件并返回邮件结构体
+ * # Arguments
+ * * `file_data` - Uint8Array 类型的 MSG 文件数据
+ * # Returns - 邮件结构体
+ * - subject: 主题
+ * - sender_name: 发件人名称
+ * - sender_email: 发件人邮箱
+ * - recipients: 收件人
+ * - cc_recipients: 抄送
+ * - sent_time: 发送时间
+ * - body_text: 正文
+ * - body_html: HTML 正文
+ * - attachments: 附件
+ *   - filename: 文件名
+ *   - content_type: 内容类型
+ *   - data: 文件数据
+ *   - content_id: Content-ID
+ */
+export function parse_msg_file(file_data: Uint8Array): any;
+
+export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembly.Module;
+
+export interface InitOutput {
+  readonly memory: WebAssembly.Memory;
+  readonly parse_msg_file: (a: number, b: number) => [number, number, number];
+  readonly __wbindgen_malloc: (a: number, b: number) => number;
+  readonly __wbindgen_realloc: (a: number, b: number, c: number, d: number) => number;
+  readonly __wbindgen_export_2: WebAssembly.Table;
+  readonly __externref_table_dealloc: (a: number) => void;
+  readonly __wbindgen_start: () => void;
+}
+
+export type SyncInitInput = BufferSource | WebAssembly.Module;
+/**
+* Instantiates the given `module`, which can either be bytes or
+* a precompiled `WebAssembly.Module`.
+*
+* @param {{ module: SyncInitInput }} module - Passing `SyncInitInput` directly is deprecated.
+*
+* @returns {InitOutput}
+*/
+export function initSync(module: { module: SyncInitInput } | SyncInitInput): InitOutput;
+
+/**
+* If `module_or_path` is {RequestInfo} or {URL}, makes a request and
+* for everything else, calls `WebAssembly.instantiate` directly.
+*
+* @param {{ module_or_path: InitInput | Promise<InitInput> }} module_or_path - Passing `InitInput` directly is deprecated.
+*
+* @returns {Promise<InitOutput>}
+*/
+export default function __wbg_init (module_or_path?: { module_or_path: InitInput | Promise<InitInput> } | InitInput | Promise<InitInput>): Promise<InitOutput>;

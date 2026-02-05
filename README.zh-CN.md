@@ -23,56 +23,60 @@
 
 ## 打包构建
 
-在项目根目录下运行以下命令，将 Rust 代码编译为适用于 Web 的 WebAssembly 模块：
+你可以通过 `--out-dir` 参数将不同目标的构建产物输出到指定目录：
 
+### Web 模式 (浏览器直接使用)
+适用于直接通过 `<script type="module">` 引入。
 ```bash
-wasm-pack build --target web
+wasm-pack build --target web --out-dir pkg/web
 ```
 
-生成的 `pkg/` 目录将包含编译好的 WASM 二进制文件和 JavaScript 胶水代码。
+### Bundler 模式 (Vite, Webpack, Rollup)
+适用于现代前端构建工具。
+```bash
+wasm-pack build --target bundler --out-dir pkg/bundler
+```
 
 ## 使用示例
 
-### 1. 引入项目
+### 1. Web 模式 (原生 JS)
+在 Web 模式下，你需要手动调用 `init` 函数。
 
 ```javascript
-import init, { parse_msg_file } from './pkg/msg_parser_wasm.js';
+import init, { parse_msg_file } from './pkg/web/msg_parser_wasm.js';
 
 async function run() {
     // 初始化 WASM 模块
     await init();
 
     const fileInput = document.getElementById('file-input');
-    
     fileInput.addEventListener('change', async (e) => {
         const file = e.target.files[0];
-        if (!file) return;
-
-        const arrayBuffer = await file.arrayBuffer();
-        const uint8Array = new Uint8Array(arrayBuffer);
+        const uint8Array = new Uint8Array(await file.arrayBuffer());
 
         try {
             // 解析 MSG 文件
             const emailData = parse_msg_file(uint8Array);
-            
             console.log("主题:", emailData.subject);
-            console.log("发件人:", emailData.sender_name);
-            console.log("正文:", emailData.body_text);
-            
-            // 处理附件
-            emailData.attachments.forEach(att => {
-                console.log(`附件: ${att.filename} (${att.data.length} 字节)`);
-            });
         } catch (err) {
             console.error("解析错误:", err);
         }
     });
 }
-
 run();
 ```
 
-### 2. 数据结构
+### 2. Bundler 模式 (Vite/Webpack)
+在构建工具环境下，通常不需要手动调用 `init`。
+
+```javascript
+import { parse_msg_file } from 'msg-parser-wasm'; // 或路径引用
+
+// 直接使用解析函数
+const emailData = parse_msg_file(uint8Array);
+```
+
+## 数据结构
 
 `parse_msg_file` 函数返回的 JavaScript 对象结构如下：
 
