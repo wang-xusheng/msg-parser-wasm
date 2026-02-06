@@ -5,7 +5,7 @@
     "xushengwang183@gmail.com"
   ],
   "description": "A high-performance Outlook .msg file parser powered by Rust and WebAssembly",
-  "version": "0.0.1-beta",
+  "version": "0.0.2-beta",
   "license": "MIT",
   "files": [
     "msg_parser_wasm_bg.wasm",
