@@ -1,6 +1,6 @@
 # msg-parser-wasm
 
-[简体中文](./README.zh-CN.md)
+[github](https://github.com/wang-xusheng/msg-parser-wasm)
 
 ---
 
@@ -14,65 +14,21 @@ A Rust-based parser for Microsoft Outlook `.msg` files, compiled to WebAssembly 
 - Extract attachments: Filenames, Content-Types, Content-IDs (for inline images), and raw data.
 - Support for multiple encodings (UTF-16, UTF-8, GBK).
 
-## Prerequisites
-
-To build this project, you need:
-
-- [Rust](https://www.rust-lang.org/tools/install)
-- [wasm-pack](https://rustwasm.github.io/wasm-pack/installer/)
-
-## Build
-
-You can build for different environments using the `--out-dir` flag:
-
-### Web (Direct Browser Usage)
-For usage directly in a browser via `<script type="module">`.
-```bash
-wasm-pack build --target web --out-dir pkg/web
-```
-
-### Bundler (Vite, Webpack, Rollup)
-For usage with modern build tools. This is usually the default for npm packages.
-```bash
-wasm-pack build --target bundler --out-dir pkg/bundler
-```
 
 ## Usage
 
-### 1. Web Target (No Bundler)
-When using the `web` target, you must manually initialize the WASM module.
-
-```javascript
-import init, { parse_msg_file } from './pkg/web/msg_parser_wasm.js';
-
-async function run() {
-    // Initialize the WASM module
-    await init();
-
-    const fileInput = document.getElementById('file-input');
-    fileInput.addEventListener('change', async (e) => {
-        const file = e.target.files[0];
-        const uint8Array = new Uint8Array(await file.arrayBuffer());
-
-        try {
-            const emailData = parse_msg_file(uint8Array);
-            console.log("Subject:", emailData.subject);
-        } catch (err) {
-            console.error("Parsing error:", err);
-        }
-    });
-}
-run();
-```
-
-### 2. Bundler Target (Vite/Webpack)
-When using a bundler, the initialization is often handled automatically or through a simpler import.
+import msg-parser-wasm  
+npm: `npm i msg-parser-wasm`  
+pnpm: `pnpm add msg-parser-wasm`  
 
 ```javascript
 import { parse_msg_file } from 'msg-parser-wasm'; // Or './pkg/bundler/msg_parser_wasm.js'
 
 // Most bundlers allow direct usage if configured correctly
-const emailData = parse_msg_file(uint8Array);
+const response = await fetch(url)
+const arrayBuffer = await response.arrayBuffer()
+const uint8Array = new Uint8Array(arrayBuffer)
+const result = parse_msg_file(uint8Array)
 ```
 
 ## Data Structure
