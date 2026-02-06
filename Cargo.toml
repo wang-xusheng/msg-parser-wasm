@@ -1,6 +1,6 @@
 [package]
 name = "msg-parser-wasm"
-version = "0.0.2-beta"
+version = "0.0.3-beta"
 edition = "2021"
 description = "A high-performance Outlook .msg file parser powered by Rust and WebAssembly"
 license = "MIT"

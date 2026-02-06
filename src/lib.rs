@@ -431,7 +431,7 @@ mod tests {
     #[test]
 
     fn test_parse_real_msg_file() {
-        let file_data = include_bytes!("../target/大件-武汉-M5工厂成品库装卸费用申请-11月.msg");
+        let file_data = include_bytes!("../target/e990525095f52ef1fadf5cef4fc4864c.msg");
 
         let result = parse_msg_to_struct(file_data);
 
