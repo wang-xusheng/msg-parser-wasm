@@ -201,9 +201,11 @@ fn parse_property(email: &mut MsgEmail, prop_name: &str, data: &[u8]) {
             }
         }
         TAG_BODY_RTF => {
-            if let Ok(decompressed) = compressed_rtf::decompress_rtf(data) {
-                if !decompressed.trim().is_empty() {
-                    email.body_rtf = Some(decompressed);
+            if data.len() >= 16 {
+                if let Ok(decompressed) = compressed_rtf::decompress_rtf(data) {
+                    if !decompressed.trim().is_empty() {
+                        email.body_rtf = Some(decompressed);
+                    }
                 }
             }
         }
